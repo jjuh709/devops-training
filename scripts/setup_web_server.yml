@@ -1,0 +1,29 @@
+---
+- name: Setup Web Server
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Update apt repository
+      apt:
+        update_cache: yes
+
+    - name: Install NGINX
+      apt:
+        name: nginx
+        state: present
+
+    - name: Ensure NGINX is started and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Copy the web application
+      copy:
+        src: /path/to/your/local/index.html
+        dest: /var/www/html/index.html
+
+    - name: Restart NGINX
+      service:
+        name: nginx
+        state: restarted
